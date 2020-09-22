@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <script type="text/javascript" src="/path/to/jquery-latest.js"></script>
+<script type="text/javascript" src="/path/to/jquery.tablesorter.js"></script>
+ 
+  <style>
+  .modal-header, h4, .close {
+    background-color: #7573fc;
+    color:white !important;
+    text-align: center;
+    //font-size: 30px;
+  }
+  .modal-footer {
+    background-color: #f9f9f9;
+  }
+  .modal-header {
+  padding : 5px;
+  }
+  .txtLeft{
+  text-align: left;
+  }
+  ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  top: 0;
+  width: 100%;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #ffffff;
+  color: #7573fc;
+}
+  </style>
+<script>
+  var app = angular.module('myApp', []);
+  
+  app.service('testService', function ($http) {
+  this.getData = function () {
+      return $http.get('./data.json');
+  }
+});
+app.controller('myCtrl', function($scope, $http, testService) {
+	
+	var d = new Date();
+	var CurHour = (d.getHours()<10)?"0"+d.getHours():d.getHours();
+	var CurMin = (d.getMinutes()<10)?'0'+d.getMinutes():d.getMinutes();
+	var Seconds = (d.getSeconds()<10)?'0'+d.getSeconds():d.getSeconds();
+	
+/////////////20190218 For new n current date n time 
+	var CurDay = (d.getDate()<10)?'0'+d.getDate():d.getDate();
+	var CurMonth =((d.getMonth()+1)<10)?'0'+(d.getMonth()+1):(d.getMonth()+1);
+	var CurYear = d.getFullYear();
+	
+	$scope.CurrentDate=CurDay+'/'+CurMonth+'/'+CurYear;
+	$scope.CurrentTime=CurHour+":"+CurMin+":"+Seconds;
+	
+	$scope.TodayTimenDate=$scope.CurrentDate+' '+$scope.CurrentTime;
+	
+	function Init() {
+      $scope.data = {};
+      testService.getData().then(function(data) {
+          $scope.myinfoVariable = data;
+          console.log(data)        
+      });
+   }
+   Init();
+   
+   $scope.tableData= {
+  "data": [
+    {
+      "id": 1,
+      "name": "Andrews Phillip",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Sam X Williams"
+    },
+    {
+      "id": 2,
+      "name": "Dillard Mauleen",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Andy Anthony"
+    },
+    {
+      "id": 3,
+      "name": "Miller Jessica",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Mark Twian"
+    },
+    {
+      "id": 4,
+      "name": "Marcus Brownless",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Phillip Melo"
+    },
+    {
+      "id": 5,
+      "name": "Jake Peralta",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Andy Anthony"
+    },
+    {
+      "id": 6,
+      "name": "Adam Lewy",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Andy Anthony"
+    },
+    {
+      "id": 7,
+      "name": "Anthony Hopkins",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Terry Christie"
+    },
+    {
+      "id": 8,
+      "name": "Sebastian Vettel",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "George Lecrec"
+    },
+    {
+      "id": 9,
+      "name": "John Ralfion",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Andy Anthony"
+    },
+    {
+      "id": 10,
+      "name": "Leslie Knope",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "April Ludgate"
+    },
+    {
+      "id": 11,
+      "name": "Rom Swanson",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Andrew Bernard"
+    },
+    {
+      "id": 12,
+      "name": "Jimothy Halpert",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Jack Ryan"
+    },
+    {
+      "id": 13,
+      "name": "Michael Scott",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Prison Mike"
+    },
+    {
+      "id": 14,
+      "name": "Walter White",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Albert S Crews"
+    },
+    {
+      "id": 15,
+      "name": "Sheldon Cooper",
+      "description": "Contrary to popular belief, Lorem",
+      "webReference": "Craig McMullam"
+    }
+  ]
+}
+	
+	
+	
+$scope.GetData4Table=function(){
+var Statement="./data.json";
+$http({
+	method : "GET",
+	url : Statement
+}).then(function mySuccess(response) {
+
+	$scope.Data4Table=response.data;
+	$scope.Data4Table=$scope.Data4Table.data;
+	alert($scope.Data4Table)
+	 console.log("success");
+}, function myError(response) {
+	console.log("error, please check..!");
+});  
+}
+$scope.GetData4Table();
+
+$scope.addNewRow = function (name,desc,wref){
+
+if((name==undefined) || (name=="")){
+ alert("Please enter the name");
+ return;
+ }
+if((desc==undefined) || (desc=="")){
+ alert("Please enter the description");
+ return;
+ }
+if((wref==undefined) || (wref=="")){
+ alert("Please enter the Web Reference");
+ return;
+ }
+
+var Data = {};
+
+Data.name = name;
+Data.description = desc;
+Data.webReference = wref;
+var cat=JSON.parse(JSON.stringify(Data));
+$scope.tableData.data.push(cat);
+
+$scope.IName='';
+$scope.IDesc='';
+$scope.IWebRef='';
+}
+
+$scope.SelectedId=function(x){
+	$scope.SelectedIds='y';
+	angular.forEach($scope.tableData.data,function(value,key)
+	{	
+    //console.log("value sssssssssssssss"+JSON.stringify(value));
+		if(value.Select=='Y'){
+			//SelectedIds.push(value.ORD_NO);
+			$scope.SelectedIds+=","+value.id+"";
+		}
+   }); 
+
+   console.log("$scope.SelectedIds"+$scope.SelectedIds)
+}
+
+$scope.DeleteRows=function(){
+//alert(typeof($scope.SelectedIds));
+if($scope.SelectedIds=='y') return;
+$scope.SelectedIds = $scope.SelectedIds.split(',');
+	
+
+			
+			//$scope.tableData.data.splice($scope.SelectedIds[i],1);
+			
+			for (var i = $scope.SelectedIds.length -1; i >= 0; i--){
+				$scope.tableData.data.splice($scope.SelectedIds[i],1);
+			}
+			<!-- for (var j=0; j<this.OverFlowListData[i].SECURITY.length;  j++) -->
+			<!-- { -->
+			<!-- //console.log(">>>>>>"+this.OverFlowListData[i].SECURITY[j].SEC_RECID); -->
+			<!-- //console.log("<<<<<<"+this.OverFlowListData[i].SECURITY[j].Select); -->
+			<!-- if((this.OverFlowListData[i].SECURITY[j].Select=='true') || (this.OverFlowListData[i].SECURITY[j].Select==true)){ -->
+			<!-- //console.log(this.OverFlowListData[i].SECURITY[j].SEC_RECID); -->
+			<!-- this.SecurityIDs+=","+this.OverFlowListData[i].SECURITY[j].SEC_RECID; -->
+			<!-- } -->
+			//}
+		
+}
+$(function() {
+  $("#myTable").tablesorter();
+});
+$(function() {
+  $("#myTable").tablesorter({ sortList: [[0,0], [1,0]] });
+});
+});
+</script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+
+<div class="container">
+  <h2>Alerts</h2>
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-default btn-lg" id="myBtn">Click</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" style="width: 1250px;">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" >
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="txtLeft"> Alert</h4>
+        </div>
+		<div class="modal-header" >
+		
+          <ul>
+  <li><a  href="#home">Immunization Alert</a></li>
+  <li><a href="#news">Lab Alerts</a></li>
+  <li><a href="#contact">DI Alerts</a></li>
+  <li><a class="active" href="#about">Immunization Alert</a></li>
+</ul>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;height:1000px;">
+          
+		  
+		  <div class="col-md-12">
+		  
+		  <div class="col-md-6">
+		  <h5>Immunization Alert</h5>
+		  <div class="form-group">
+				<label  class="col-sm-1 control-label">Find</label>
+				<div class="col-sm-7">
+				  <input class="form-control" type="text" ng-model="ISearch">
+				</div>
+				<div class="col-sm-4">
+				  <button type="submit" class="btn btn-basic btn-block" ng-click="DeleteRows();">Delete</button>
+				</div>
+			  </div><br><br>
+				<table class="table table-bordered tablesorter" id="myTable">
+					<thead>
+					  <tr>
+					  <th></th>
+						<th>Firstname</th>
+						<th>Lastname</th>
+						<th>Email</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr ng-repeat="x in tableData.data | filter : ISearch">
+						<td data-sort-ignore="true" style="vertical-align:top;"><div class="custom-control custom-checkbox">
+						  <input type="checkbox" class="custom-control-input " name="Select" id="Select{{$index+1}}"  ng-init="x.Select='N'" ng-model="x.Select" ng-true-value="'Y'" ng-false-value="'N'" ng-click="SelectedId()">
+						  <label class="custom-control-label" for="Select{{$index+1}}"></label>
+						  </div></td>
+						<td>{{x.name}}</td>
+						<td>{{x.description}}</td>
+						<td>{{x.webReference}}</td>
+					  </tr>
+					  
+					</tbody>
+				  </table>
+		  </div>
+		  
+		  <div class="col-md-6">
+		  
+			<div class="form-group">
+				<label  class="col-sm-2 control-label">Name</label>
+				<div class="col-sm-10">
+				  <input class="form-control" type="text" ng-model="IName">
+				</div>
+			  </div><br>
+            <div class="form-group">
+				<label class="col-sm-2 control-label">Description</label>
+				<div class="col-sm-10">
+				  <input class="form-control" type="text" ng-model="IDesc">
+				</div>
+			  </div><br>
+            <div class="form-group">
+				<label class="col-sm-2 control-label">Web Ref</label>
+				<div class="col-sm-10">
+				  <input class="form-control" type="text" ng-model="IWebRef">
+				</div>
+			  </div><br>
+			  <div class="button-group">
+				<div class="col-sm-6"></div>
+				<div class="col-sm-6">
+				  <button type="submit" class="btn btn-basic btn-block" ng-click="addNewRow(IName,IDesc,IWebRef);">Add</button>
+				</div>
+			  </div>
+              
+		  
+		  </div>
+		  
+		  </div>
+		  
+		  
+        </div>
+        
+      </div>
+      
+    </div>
+  </div> 
+</div>
+ 
+<script>
+$(document).ready(function(){
+  $("#myBtn").click(function(){
+    $("#myModal").modal();
+  });
+});
+</script>
+
+</body>
+</html>
